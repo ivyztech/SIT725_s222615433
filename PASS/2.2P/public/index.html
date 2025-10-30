@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Express Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>body{font-family:system-ui;margin:2rem;max-width:600px}</style>
+</head>
+<body>
+  <h1>Express Calculator Demo</h1>
+  <p>Try <code>/api/add?a=5&b=7</code> or use the form below.</p>
+
+  <form id="add-form">
+    <input id="a" type="number" placeholder="a" required />
+    <input id="b" type="number" placeholder="b" required />
+    <button>Add</button>
+  </form>
+
+  <pre id="out"></pre>
+
+  <script>
+    const form = document.getElementById('add-form');
+    const out = document.getElementById('out');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const a = document.getElementById('a').value;
+      const b = document.getElementById('b').value;
+      try {
+        const res = await fetch(`/api/add?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`);
+        const data = await res.json();
+        out.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        out.textContent = err?.message || String(err);
+      }
+    });
+  </script>
+</body>
+</html>
+
